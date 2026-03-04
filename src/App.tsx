@@ -15,7 +15,8 @@ import { fetchUsers, selectSelectedUser } from './features/users/usersSlice';
 import {
   fetchPosts,
   selectPosts,
-  selectPostsStatus,
+  selectPostsLoaded,
+  selectPostsHasError,
   selectSelectedPost,
   setSelectedPost,
 } from './features/posts/postsSlice';
@@ -39,11 +40,9 @@ export const App: React.FC = () => {
   }, [author, dispatch]);
 
   const posts = useAppSelector(selectPosts);
-  const postsStatus = useAppSelector(selectPostsStatus);
+  const loaded = useAppSelector(selectPostsLoaded);
+  const hasError = useAppSelector(selectPostsHasError);
   const selectedPost = useAppSelector(selectSelectedPost);
-
-  const loaded = postsStatus !== 'loading';
-  const hasError = postsStatus === 'failed';
 
   return (
     <main className="section">

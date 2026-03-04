@@ -8,13 +8,15 @@ import {
 import { Comment } from '../../types/Comment';
 
 export interface CommentsState {
-  list: Comment[];
-  status: 'idle' | 'loading' | 'failed';
+  items: Comment[];
+  loaded: boolean;
+  hasError: boolean;
 }
 
 const initialState: CommentsState = {
-  list: [],
-  status: 'idle',
+  items: [],
+  loaded: false,
+  hasError: false,
 };
 
 // load comments for a post
@@ -54,36 +56,40 @@ const commentsSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchComments.pending, state => {
-        state.status = 'loading';
+        state.loaded = false;
+        state.hasError = false;
       })
       .addCase(
         fetchComments.fulfilled,
         (state, action: PayloadAction<Comment[]>) => {
-          state.status = 'idle';
-          state.list = action.payload;
+          state.loaded = true;
+          state.items = action.payload;
         },
       )
       .addCase(fetchComments.rejected, state => {
-        state.status = 'failed';
+        state.loaded = true;
+        state.hasError = true;
       })
       .addCase(
         addComment.fulfilled,
         (state, action: PayloadAction<Comment>) => {
-          state.list.push(action.payload);
+          state.items.push(action.payload);
         },
       )
       .addCase(
         removeComment.fulfilled,
         (state, action: PayloadAction<number>) => {
-          state.list = state.list.filter(c => c.id !== action.payload);
+          state.items = state.items.filter(c => c.id !== action.payload);
         },
       );
   },
 });
 
 export const selectComments = (state: { comments: CommentsState }) =>
-  state.comments.list;
-export const selectCommentsStatus = (state: { comments: CommentsState }) =>
-  state.comments.status;
+  state.comments.items;
+export const selectCommentsLoaded = (state: { comments: CommentsState }) =>
+  state.comments.loaded;
+export const selectCommentsHasError = (state: { comments: CommentsState }) =>
+  state.comments.hasError;
 
 export default commentsSlice.reducer;

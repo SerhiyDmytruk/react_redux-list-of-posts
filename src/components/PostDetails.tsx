@@ -8,7 +8,8 @@ import {
   addComment,
   removeComment,
   selectComments,
-  selectCommentsStatus,
+  selectCommentsLoaded,
+  selectCommentsHasError,
 } from '../features/comments/commentsSlice';
 
 import { Post } from '../types/Post';
@@ -22,9 +23,8 @@ export const PostDetails: React.FC<Props> = ({ post }) => {
   const dispatch = useAppDispatch();
 
   const comments = useAppSelector(selectComments);
-  const commentsStatus = useAppSelector(selectCommentsStatus);
-  const loaded = commentsStatus !== 'loading';
-  const hasError = commentsStatus === 'failed';
+  const loaded = useAppSelector(selectCommentsLoaded);
+  const hasError = useAppSelector(selectCommentsHasError);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
