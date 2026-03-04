@@ -21,6 +21,7 @@ export const fetchPosts = createAsyncThunk<Post[], number>(
   'posts/fetchAll',
   async (userId: number) => {
     const posts = await getUserPosts(userId);
+
     return posts;
   },
 );
@@ -51,9 +52,12 @@ const postsSlice = createSlice({
 });
 
 export const selectPosts = (state: { posts: PostsState }) => state.posts.items;
-export const selectPostsLoaded = (state: { posts: PostsState }) => state.posts.loaded;
-export const selectPostsHasError = (state: { posts: PostsState }) => state.posts.hasError;
-export const selectSelectedPost = (state: { posts: PostsState }) => state.posts.selectedPost;
+export const selectPostsLoaded = (state: { posts: PostsState }) =>
+  state.posts.loaded;
+export const selectPostsHasError = (state: { posts: PostsState }) =>
+  state.posts.hasError;
+export const selectSelectedPost = (state: { posts: PostsState }) =>
+  state.posts.selectedPost;
 
 export const { setSelectedPost } = postsSlice.actions;
 export default postsSlice.reducer;

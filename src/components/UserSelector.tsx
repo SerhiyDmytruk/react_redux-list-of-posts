@@ -37,9 +37,7 @@ export const UserSelector: React.FC = () => {
             e.stopPropagation();
             setExpanded(current => !current);
           }}
-          onBlur={() => {
-            setExpanded(current => !current);
-          }}
+          onBlur={() => setExpanded(false)}
         >
           <span>{selectedUser?.name || 'Choose a user'}</span>
 
